@@ -1,0 +1,92 @@
+<html>
+	<body>
+		<div id="a" style="position: relative;width:500px;height:500px;border: 1px solid red;">
+			A
+			<div
+				id="b"
+				style="position: absolute;top: 50px; left: 50px; width:200px;height:200px;border: 1px solid blueviolet;"
+			>
+				B
+			</div>
+		</div>
+	</body>
+	<script>
+    function myAnimation(fn) {
+      const _this = this;
+
+      return function() {
+        const args = [].slice.call(arguments);
+        requestAnimationFrame(function() {
+          fn && fn.apply(_this, args);
+        });
+      }
+    }
+
+		const A = document.getElementById('a');
+		const B = document.getElementById('b');
+
+		let moving = false;
+		let startOffset = undefined;
+		let lastOffset = undefined;
+		let endOffset = undefined;
+
+		A.addEventListener(
+			'mousemove',
+			myAnimation(function(e) {
+				if (!moving) return;
+
+        const { clientX, clientY } = e;
+        lastOffset = {
+          x: clientX,
+          y: clientY
+        };
+				const { x, y } = startOffset;
+        B.style.transform = `translate(${clientX - x}px,${clientY - y}px)`;
+        
+        console.log('moving', e.target.getAttribute('id'), clientX, clientY, clientX - x, clientY - y);
+			})
+		);
+
+		A.addEventListener('mousedown', function(e) {
+			// 在A里面移动B
+      if (moving || e.target.getAttribute('id') !== 'b') return;
+      
+      const { clientX, clientY } = e;
+			lastOffset = startOffset = {
+				x: clientX,
+				y: clientY,
+			};
+      moving = true;
+      
+      console.log('start moving', startOffset);
+		});
+
+		A.addEventListener('mouseup', function(e) {
+      if (!moving) return;
+      const { clientX, clientY } = e;
+			endOffset = {
+				x: clientX,
+				y: clientY,
+			};
+      moving = false;
+      const styles = window.getComputedStyle(B);
+      const { left, top } = styles;
+      const { x, y } = startOffset;
+      const leftNew = parseInt(left) + lastOffset.x - x;
+      const topNew = parseInt(top) + lastOffset.y - y;
+      B.style.left = `${leftNew}px`;
+      B.style.top = `${topNew}px`;
+      B.style.transform = '';
+      
+      console.log('end moving', leftNew, topNew);
+		});
+
+		B.addEventListener(
+			'mousemove',
+			myAnimation(function(e) {
+				// if (!moving) return;
+				console.log('B:', e.clientX);
+			}, 200, { leading: true })
+    );
+	</script>
+</html>
