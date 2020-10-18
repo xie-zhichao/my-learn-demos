@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      .demo-box {
+        margin: 10px auto;
+        width: 800px;
+        height: 80px;
+        border: 1px solid red;
+      }
+      .demo-box:first-of-type {
+        margin-top: 0;
+      }
+
+      .inline-center {
+        line-height: 80px;
+      }
+
+      .block-center-parent::after {
+        content: '';
+        height: 100%;
+      }
+      .block-center-parent::after, .block-center {
+        display: inline-block;
+        width: 300px;
+        vertical-align: middle;
+        background-color: bisque;
+      }
+
+      .table-center-parent {
+        display: table-cell;
+        margin: 0 auto;
+        vertical-align: middle;
+      }
+      .table-center {
+        
+      }
+
+      .flex-center-parent {
+        display: flex;
+        align-items: center;
+      }
+      .flex-center {
+        width: 300px;
+        background-color: bisque;
+      }
+
+      .transform-center-parent {
+        position: relative;
+      }
+      .transform-center {
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+
+      .position-center-parent {
+        position: relative;
+      }
+      .position-center {
+        position: absolute;
+        height: 20px;
+        top: 50%;
+        margin-top: -10px;
+        background-color: bisque;
+      }
+
+      .position-2-center-parent {
+        position: relative;
+      }
+      .position-2-center {
+        position: absolute;
+        height: 20px;
+        top: 0;
+        bottom: 0;
+        margin: auto 0;
+        background-color: bisque;
+      }
+    </style>
+    <title>垂直居中</title>
+  </head>
+  <body>
+    <div class="demo-box inline-center">
+      我是行内元素
+    </div>
+    <div class="demo-box block-center-parent">
+      <div class="block-center">我是块状元素</div>
+    </div>
+    <div class="demo-box table-center-parent">
+      <div class="table-center">我是表格元素</div>
+    </div>
+    <div class="demo-box flex-center-parent">
+      <div class="flex-center">我是flex元素</div>
+    </div>
+    <div class="demo-box transform-center-parent">
+      <div class="transform-center">我是transform元素</div>
+    </div>
+    <div class="demo-box position-center-parent">
+      <div class="position-center">我是position元素</div>
+    </div>
+    <div class="demo-box position-2-center-parent">
+      <div class="position-2-center">我也是position元素</div>
+    </div>
+  </body>
+</html>
