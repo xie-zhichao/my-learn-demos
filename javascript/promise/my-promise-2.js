@@ -205,11 +205,9 @@ MyPromise.prototype.race = function (promiseArray) {
 };
 
 MyPromise.resolve = function (value) {
-  let promise = new MyPromise((resolve, reject) => {
-    MyPromise.prototype.resolvePromise(promise, value, resolve, reject);
+  return new MyPromise((resolve) => {
+    resolve(value);
   });
-
-  return promise;
 };
 
 MyPromise.reject = function (reason) {

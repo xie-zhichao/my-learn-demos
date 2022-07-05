@@ -1,0 +1,101 @@
+<html>
+  <body>
+    <div
+      id="a-ball"
+      style="
+        position: relative;
+        width: 200px;
+        height: 200px;
+        border: 1px solid red;
+        border-radius: 100%;
+      "
+    >
+      A ball
+    </div>
+    <div>
+      <input id="params" />
+      <button onclick="go()">go!</button>
+    </div>
+  </body>
+  <script>
+    const tween = {
+      linear(t, b, c, d) {
+        return (c * t) / d + b;
+      },
+      easeIn(t, b, c, d) {
+        return c * (t /= d) * t + b;
+      },
+      strongEaseIn(t, b, c, d) {
+        return c * (t /= d) * t * t * t * t + b;
+      },
+      strongEaseOut(t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+      },
+      sinEaseIn(t, b, c, d) {
+        return c * (t /= d) * t * t + b;
+      },
+      sinEaseOut(t, b, c, d) {
+        return c * ((t = t / d - 1) * t * t + 1) + b;
+      },
+    };
+
+    function Animate(dom) {
+      this.dom = dom;
+      this.startTime = 0;
+      this.startPos = 0;
+      this.endPos = 0;
+      this.propertyName = '';
+      this.easing = null;
+      this.duration = null;
+    }
+
+    Animate.prototype.start = function (
+      propertyName,
+      endPos,
+      duration,
+      easing
+    ) {
+      this.startTime = Date.now();
+      this.startPos = this.dom.getBoundingClientRect()[propertyName];
+      this.propertyName = propertyName;
+      this.endPos = Number(endPos);
+      this.duration = Number(duration);
+      this.easing = tween[easing];
+
+      const timer = setInterval(() => {
+        if (this.step() === false) {
+          clearInterval(timer);
+        }
+      }, 19);
+    };
+
+    Animate.prototype.step = function () {
+      const now = Date.now();
+      if (now >= this.startTime + this.duration) {
+        this.update(this.endPos);
+        return false;
+      }
+      const pos = this.easing(
+        now - this.startTime,
+        this.startPos,
+        this.endPos - this.startPos,
+        this.duration
+      );
+      this.update(pos);
+    };
+
+    Animate.prototype.update = function (pos) {
+      this.dom.style[this.propertyName] = pos + 'px';
+    };
+
+		const animate = new Animate(document.getElementById('a-ball'));
+
+		function go() {
+			const input = document.getElementById('params');
+			const params = (input.value || '').split(',');
+			if (params.length === 4) {
+				animate.start(params[0], params[1], params[2], params[3]);
+			}
+		}
+  </script>
+</html>
