@@ -7,10 +7,11 @@
  */
 function myDebounce(fn, wait, options) {
   let _timer = undefined;
-  const _this = this;
+  
   const { leading = false } = options || {};
 
   return function() {
+    const _this = this;
     const args = [].slice.call(arguments);
     
     if (leading && !_timer) {
