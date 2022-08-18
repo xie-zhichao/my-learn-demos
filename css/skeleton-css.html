@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CSS 3.0实现的加载背景动画（骨架屏）</title>
+  <style>
+    .is-loading {
+      /* 宽度和高度根据要展示元素大小设定 */
+      width: 500px;
+      height: 500px;
+      position: relative;
+      margin: 0 auto;
+      top: 100px;
+
+      /* 以下代码实现背景动画效果 */
+      animation: loading 1.4s ease infinite;
+      -webkit-animation: loading 1.4s ease infinite;
+      background-image: -webkit-gradient(linear, left top, right top, color-stop(25%, #f0f0f0), color-stop(37%, #e3e3e3), color-stop(63%, #f0f0f0));
+      background-image: -o-linear-gradient(left, #f0f0f0 25%, #e3e3e3 37%, #f0f0f0 63%);
+      background-image: linear-gradient(90deg, #f0f0f0 25%, #e3e3e3 37%, #f0f0f0 63%);
+      background-size: 400% 100%
+    }
+
+    @-webkit-keyframes loading {
+      0% {
+        background-position: 100% 50%
+      }
+
+      to {
+        background-position: 0 50%
+      }
+    }
+
+    @keyframes loading {
+      0% {
+        background-position: 100% 50%
+      }
+
+      to {
+        background-position: 0 50%
+      }
+    }
+
+    .title {
+    position: relative;
+    display: inline-block;
+    font-size: 15px;
+    letter-spacing: 2px;
+    padding: 0px 20px;
+    color: transparent;
+    line-height: 30px;
+    animation: title-in 1s .7s forwards;
+    border-radius: 20px;
+    overflow: hidden;
+    }
+
+    .title::before {
+        width: 100%;
+        height: 100%;
+        transform: scaleX(0);
+        transform-origin: left;
+        background-color: #eee;
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        animation: side-in-out infinite 1s linear forwards;
+    }
+
+    @keyframes side-in-out {
+    50% {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+
+    50.1% {
+        transform-origin: right;
+    }
+
+    100% {
+        transform-origin: right;
+        transform: scaleX(0)
+    }
+    }
+
+    @keyframes title-in {
+    to {
+        color: #000;
+    }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="is-loading"></div>
+  <div class="title">Animation Demo</div>
+</body>
+
+</html>
